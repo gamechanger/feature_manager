@@ -1,8 +1,9 @@
 import { Router } from 'oak/mod.ts';
 import { checker } from 'lib/rules/checker.ts';
+import {FeatureManagementService} from 'src/service/FeatureManagementService.ts'
 
 const router = new Router();
-
+const featureManagementService = new FeatureManagementService()
 router
 	.get('/', (context) => {
 		context.response.body = 'Hello world!';
@@ -15,13 +16,10 @@ router
 		context.response.body = 'response';
 	})
 	.post('/feature/:namespace/:category/:id',  async (context) => {
-		let fileName = [context.params.namespace, context.params.category, context.params.id].join(":");
-		let featurePath = './features/' + fileName + ".json";
 		let body = context.request.body();
 		let parsedBody = await body.value;
 		try {
-			let successMessage = addFeature(featurePath, parsedBody);
-			console.log(successMessage);
+			await featureManagementService.addOrUpdateFeature(context.params.id, context.params.namespace, context.params.category, parsedBody);
 			context.response.status = 200;
 		} catch {
 			context.response.status = 500;
