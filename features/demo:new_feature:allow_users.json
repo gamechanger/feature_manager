@@ -1,0 +1,14 @@
+{
+  "id": "allow_users",
+  "description": "Checks if the user is allowed to use a new feature",
+
+  "rule": {
+    "type": "list_checker",
+    "value": ["admin@gc.com", "superadmin@gc.com", "product@gc.com"]
+  },
+
+  "state": {
+    "is_enabled": true,
+    "is_expired": null
+  }
+}
