@@ -19,10 +19,13 @@ router
 		let featurePath = './features/' + fileName + ".json";
 		let body = context.request.body();
 		let parsedBody = await body.value;
-		let successMessage = addFeature(featurePath, parsedBody);
-
-		console.log(successMessage);
-		context.response.body = 'response';
+		try {
+			let successMessage = addFeature(featurePath, parsedBody);
+			console.log(successMessage);
+			context.response.status = 200;
+		} catch {
+			context.response.status = 500;
+		}
 	})
 	.post('/check/:namespace/:category/:id', (context) => {
 		context.response.body = 'response';
