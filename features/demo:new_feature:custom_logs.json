@@ -1,0 +1,13 @@
+{
+  "id": "custom_logs",
+  "description": "Checks if the user email matches the provided value",
+
+  "rule": {
+    "type": "value_checker",
+    "value": "awesome_user@domain.com"
+  },
+
+  "state": {
+    "is_enabled": true
+  }
+}
