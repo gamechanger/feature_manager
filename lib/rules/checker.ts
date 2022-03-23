@@ -48,7 +48,7 @@ export type RuleCheck = {
     },
     state: {
         is_enabled: boolean,
-        is_expired: boolean,
+        is_expired?: boolean,
     }
 }
 
@@ -109,6 +109,7 @@ export const checker = (feature: string, value: boolean | string | number ): Rul
       };
 
     const checkedValue = getCheckedValue(ruleDefinition, value);
+    const is_expired = ruleDefinition.state.is_expired;
 
     return {
         checks: {
@@ -116,7 +117,7 @@ export const checker = (feature: string, value: boolean | string | number ): Rul
         },
         state: {
             is_enabled: ruleDefinition.state.is_enabled,
-            is_expired: Boolean(ruleDefinition.state.is_expired)
+            is_expired, 
         }
     }
 }
