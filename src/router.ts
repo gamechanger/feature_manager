@@ -14,12 +14,13 @@ router
 
 		context.response.body = 'response';
 	})
-	.post('/feature/:namespace/:category/:id', (context) => {
-		console.log(context.params);
-
-		let fileName = [context.params.namespace, context.params.category, context.params.id].join(":") ;
+	.post('/feature/:namespace/:category/:id',  async (context) => {
+		let fileName = [context.params.namespace, context.params.category, context.params.id].join(":");
 		let featurePath = './features/' + fileName + ".json";
-		const successMessage = addFeature(featurePath, context.request.body);
+		let body = context.request.body();
+		let parsedBody = await body.value;
+		let successMessage = addFeature(featurePath, parsedBody);
+
 		console.log(successMessage);
 		context.response.body = 'response';
 	})
