@@ -1,9 +1,10 @@
 
 export enum RuleTypeEnum {
-    VALUE_CHECKER = 'value_checker',
-    RANGE_CHECKER = 'range_checker',
     LIST_CHECKER = 'list_checker',
+    RANGE_CHECKER = 'range_checker',
     REGEX_MATCHER = 'regex_matcher',
+    STATE_CHECKER = 'state_checker',
+    VALUE_CHECKER = 'value_checker',
 }
 
 type RuleTypeForValueChecker = {
@@ -14,6 +15,11 @@ type RuleTypeForValueChecker = {
 type RuleTypeForListChecker = {
     type: RuleTypeEnum.LIST_CHECKER;
     value: (string | boolean | number)[];
+}
+
+type RuleTypeForStateChecker= {
+    type: RuleTypeEnum.STATE_CHECKER;
+    value: boolean;
 }
 
 type RuleTypeForRangeChecker = {
@@ -29,7 +35,7 @@ type RuleTypeForRegexMatcher = {
 export type RuleDefinition = {
     id: string;
     description: string;
-    rule: RuleTypeForListChecker | RuleTypeForValueChecker | RuleTypeForRangeChecker | RuleTypeForRegexMatcher;
+    rule: RuleTypeForListChecker | RuleTypeForValueChecker | RuleTypeForRangeChecker | RuleTypeForRegexMatcher | RuleTypeForStateChecker;
     state: {
         is_enabled: boolean;
         is_expired?: boolean;
@@ -50,6 +56,10 @@ function isValueChecker(rule: RuleDefinition['rule']): rule is RuleTypeForValueC
     return rule.type === RuleTypeEnum.VALUE_CHECKER;
 }
 
+function isStateChecker(rule: RuleDefinition['rule']): rule is RuleTypeForStateChecker {
+    return rule.type === RuleTypeEnum.STATE_CHECKER;
+}
+
 function isListChecker(rule: RuleDefinition['rule']): rule is RuleTypeForListChecker {
     return rule.type === RuleTypeEnum.LIST_CHECKER;
 }
@@ -65,7 +75,10 @@ function isRegexMatcher(rule: RuleDefinition['rule']): rule is RuleTypeForRegexM
 function getCheckedValue(ruleDefinition: RuleDefinition, value: boolean | string | number): boolean {
     if (isValueChecker(ruleDefinition.rule)) {
         return ruleDefinition.rule.value === value;
-    }  
+    } 
+    if (isStateChecker(ruleDefinition.rule)) {
+        return ruleDefinition.state.is_enabled === value;
+    }
     if (isListChecker(ruleDefinition.rule)) {
         return ruleDefinition.rule.value.includes(value);
     }
