@@ -16,6 +16,56 @@ for code build process and deployment.
 The main goal of Feature Manager is to improve and extend the management of features based on rules and parameters and 
 go beyond the on/off state.
 
+
+## Data Structures:
+
+***feature (key:value)***
+
+<ins>**key**</ins>: represents a self-descriptive id in the format of
+`namespace:category:id`; this naming convention by definition helps organize features into spaces and categories.
+
+* `namespace`: defines the high level application logic or domain  
+  example: `auth:x:x, scoring:x:x, android-app:x:x, ios-app:x:x, streaming:x:x`
+
+* `category`: defines a section withing the namespace to put features that are related to a specific logic together  
+  example: `auth:web:x, auth:android:x, scoring:bats:x, scoring:soccer:x`
+
+* `id`: the feature identifier  
+  example: `auth:web:required-attestation,
+  auth:android:required-attestation, scoring:bats:allow-multi-scoring, scoring:soccer:allow-ai-scoring`
+
+<ins>**value**</ins>: defines the feature definition as a JSON
+
+```
+{
+  id: string,
+  description: string,
+    
+  rule: {
+     type: [state_checker, value_checker, list_checker, range_checker, regex_matcher],
+     value: boolean|number|string|[number]|[string]|json
+  },
+
+  state: {
+     is_enabled: boolean
+     is_expired?: boolean
+  }
+
+  expiration: {
+     time: number
+     date: number
+     duration: number
+  },
+
+  events: {
+    onExpiration:
+    onChange:
+    onEnabled:
+    onDisabled:
+  }
+}
+```
+
 ## Feature rule types
 
 * *value_checker*: this is the simplest rule type checker, it compares the incoming value with the one defined in the
@@ -138,53 +188,6 @@ response.
 
   "state": {
     "is_enabled": true
-  }
-}
-```
-
-## Data Structures:
-
-***feature (key:value)***
-
-<ins>**key**</ins>: represents a self-descriptive id in the format of
-`namespace:category:id`; this naming convention by definition helps organize features into spaces and categories.
-
-* `namespace`: defines the high level application logic or domain; i.e: auth, scoring, android-app, ios-app, streaming
-
-* `category`: defines a section withing the namespace to put features that are related to a specific logic together;
-  i.e: auth:web:x, auth:android:x, scoring:bats:x, scoring:soccer:x
-
-* `id`: the feature identifier; i.e: auth:web:required-attestation,
-  auth:android:required-attestation, scoring:bats:allow-multi-scoring, scoring:soccer:allow-ai-scoring
-
-<ins>**value**</ins>: defines the feature definition as a JSON
-
-```
-{
-  id: string,
-  description: string,
-    
-  rule: {
-     type: [state_checker, value_checker, list_checker, range_checker, regex_matcher],
-     value: boolean|number|string|[number]|[string]|json
-  },
-
-  state: {
-     is_enabled: boolean
-     is_expired?: boolean
-  }
-
-  expiration: {
-     time: number
-     date: number
-     duration: number
-  },
-
-  events: {
-    onExpiration:
-    onChange:
-    onEnabled:
-    onDisabled:
   }
 }
 ```
