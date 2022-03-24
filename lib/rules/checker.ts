@@ -32,6 +32,8 @@ export type FeatureDefinition = {
     state: {
         is_enabled: boolean;
         is_expired?: boolean;
+        created_at?: number;
+        expires_at?: number;
     };
 }
 
@@ -42,6 +44,8 @@ export type RuleCheck = {
     state: {
         is_enabled: boolean,
         is_expired?: boolean,
+        created_at?: number,
+        expires_at?: number,
     }
 }
 
@@ -80,17 +84,24 @@ function getCheckedValue(featureDefinition: FeatureDefinition, value: boolean | 
     throw new Error('Could not handle the rule type');
 }
 
+export const computeRulesState = (ruleDefinition: FeatureDefinition): FeatureDefinition['state'] => {
+    const is_expired = (ruleDefinition.state.expires_at) ? ruleDefinition.state.expires_at < new Date().valueOf() : ruleDefinition.state.is_expired;
+    return {
+            is_enabled: ruleDefinition.state.is_enabled,
+            is_expired: is_expired,
+            created_at: ruleDefinition.state.created_at,
+            expires_at: ruleDefinition.state.expires_at,
+        }
+}
+
 export const checker = (ruleDefinition: FeatureDefinition, value: boolean | string | number ): RuleCheck => {
-    const checkedValue = getCheckedValue(ruleDefinition, value);
-    const is_expired = ruleDefinition.state.is_expired;
+    const state = computeRulesState(ruleDefinition);
+    const checkedValue = (!state.is_enabled || state.is_expired ) ? false : getCheckedValue(ruleDefinition, value);
 
     return {
         checks: {
             value: checkedValue
         },
-        state: {
-            is_enabled: ruleDefinition.state.is_enabled,
-            is_expired, 
-        }
+        state
     }
 }
