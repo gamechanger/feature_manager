@@ -32,7 +32,7 @@ type RuleTypeForRegexMatcher = {
     value: string;
 }
 
-export type RuleDefinition = {
+export type FeatureDefinition = {
     id: string;
     description: string;
     rule: RuleTypeForListChecker | RuleTypeForValueChecker | RuleTypeForRangeChecker | RuleTypeForRegexMatcher | RuleTypeForStateChecker;
@@ -52,51 +52,51 @@ export type RuleCheck = {
     }
 }
 
-function isValueChecker(rule: RuleDefinition['rule']): rule is RuleTypeForValueChecker {
+function isValueChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForValueChecker {
     return rule.type === RuleTypeEnum.VALUE_CHECKER;
 }
 
-function isStateChecker(rule: RuleDefinition['rule']): rule is RuleTypeForStateChecker {
+function isStateChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForStateChecker {
     return rule.type === RuleTypeEnum.STATE_CHECKER;
 }
 
-function isListChecker(rule: RuleDefinition['rule']): rule is RuleTypeForListChecker {
+function isListChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForListChecker {
     return rule.type === RuleTypeEnum.LIST_CHECKER;
 }
 
-function isRangeChecker(rule: RuleDefinition['rule']): rule is RuleTypeForRangeChecker {
+function isRangeChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForRangeChecker {
     return rule.type === RuleTypeEnum.RANGE_CHECKER;
 }
 
-function isRegexMatcher(rule: RuleDefinition['rule']): rule is RuleTypeForRegexMatcher {
+function isRegexMatcher(rule: FeatureDefinition['rule']): rule is RuleTypeForRegexMatcher {
     return rule.type === RuleTypeEnum.REGEX_MATCHER;
 }
 
-function getCheckedValue(ruleDefinition: RuleDefinition, value: boolean | string | number): boolean {
-    if (isValueChecker(ruleDefinition.rule)) {
-        return ruleDefinition.rule.value === value;
+function getCheckedValue(featureDefinition: FeatureDefinition, value: boolean | string | number): boolean {
+    if (isValueChecker(featureDefinition.rule)) {
+        return featureDefinition.rule.value === value;
     } 
-    if (isStateChecker(ruleDefinition.rule)) {
-        return ruleDefinition.state.is_enabled === value;
+    if (isStateChecker(featureDefinition.rule)) {
+        return featureDefinition.state.is_enabled === value;
     }
-    if (isListChecker(ruleDefinition.rule)) {
-        return ruleDefinition.rule.value.includes(value);
+    if (isListChecker(featureDefinition.rule)) {
+        return featureDefinition.rule.value.includes(value);
     }
-    if (isRangeChecker(ruleDefinition.rule)) {
-        return ruleDefinition.rule.value.every(({min, max}) => 
+    if (isRangeChecker(featureDefinition.rule)) {
+        return featureDefinition.rule.value.every(({min, max}) => 
             value >= min && value <= max
         )
     }
-    if (isRegexMatcher(ruleDefinition.rule)) {
-        return new RegExp(ruleDefinition.rule.value).test(value.toString())
+    if (isRegexMatcher(featureDefinition.rule)) {
+        return new RegExp(featureDefinition.rule.value).test(value.toString())
     }
 
     throw new Error('Could not handle the rule type');
 }
 
-export const checker = (feature: string, value: boolean | string | number ): RuleCheck => {
+export const checker = (featureName: string, value: boolean | string | number ): RuleCheck => {
     // TODO: use the feature which is the name in namespace:category:id format
-    const ruleDefinition: RuleDefinition = {
+    const ruleDefinition: FeatureDefinition = {
         id: "vpn_ip_range",
         description: "Defines the scoring range to consider when using AI to determine a score play.",
         rule: {

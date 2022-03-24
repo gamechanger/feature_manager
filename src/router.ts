@@ -19,8 +19,9 @@ router
 	})
 	.post('/check/:namespace/:category/:id', async (context) => {
 		const feature = `${context.params.namespace}:${context.params.category}:${context.params.id}`
-		const result = context.request.body();	
-		context.response.body = checker(feature, (await result.value).value);
+		const result = context.request.body();
+		const parsedBody = await result.value;
+		context.response.body = checker(feature, parsedBody.value);
 	});
 
 export default router;
