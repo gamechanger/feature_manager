@@ -1,14 +1,15 @@
 import { Cache } from 'lib/cache/cache.ts';
 
 export const FeatureManagementService = {
-	addOrUpdate(
+	async addOrUpdate(
 		featureId: string,
 		namespace: string,
 		category: string,
 		data: object,
 	) {
 		const fileName = [namespace, category, featureId].join(':');
-		Cache.set(fileName, JSON.stringify(data));
+		await Cache.set(fileName, JSON.stringify(data));
+		return data;
 	},
 	async read(featureId: string, namespace: string, category: string) {
 		const fileName = [namespace, category, featureId].join(':');

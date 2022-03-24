@@ -18,22 +18,27 @@ router
 		const body = context.request.body();
 		const parsedBody = await body.value;
 		try {
-			await FeatureManagementService.addOrUpdate(
+			const feature = await FeatureManagementService.addOrUpdate(
 				context.params.id,
 				context.params.namespace,
 				context.params.category,
 				parsedBody,
 			);
 			context.response.status = 200;
+			context.response.body = feature;
+			
 		} catch {
 			context.response.status = 500;
 		}
 	})
 	.post('/check/:namespace/:category/:id', async (context) => {
-		const feature =
-			`${context.params.namespace}:${context.params.category}:${context.params.id}`;
 		const result = context.request.body();
 		const parsedBody = await result.value;
+		const feature = await FeatureManagementService.read(
+			context.params.id,
+			context.params.namespace,
+			context.params.category,
+		);
 		context.response.body = checker(feature, parsedBody.value);
 	});
 

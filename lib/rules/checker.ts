@@ -80,20 +80,7 @@ function getCheckedValue(featureDefinition: FeatureDefinition, value: boolean | 
     throw new Error('Could not handle the rule type');
 }
 
-export const checker = (featureName: string, value: boolean | string | number ): RuleCheck => {
-    // TODO: use the feature which is the name in namespace:category:id format
-    const ruleDefinition: FeatureDefinition = {
-        id: "vpn_ip_range",
-        description: "Defines the scoring range to consider when using AI to determine a score play.",
-        rule: {
-          type: 'regex_matcher',
-          value: "^100\\.22\\.33\\.([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|250)$"
-        },
-        state: {
-          is_enabled: true
-        }
-      };
-
+export const checker = (ruleDefinition: FeatureDefinition, value: boolean | string | number ): RuleCheck => {
     const checkedValue = getCheckedValue(ruleDefinition, value);
     const is_expired = ruleDefinition.state.is_expired;
 

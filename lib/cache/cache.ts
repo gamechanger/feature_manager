@@ -15,7 +15,8 @@ export const Cache = {
         const reply = await redis.sendCommand('GET', featureName);
         return reply.value() as string
     },
-    set: (featureName: string, data: string) => {
-        return redis.set(featureName, data);
+    set: async (featureName: string, data: string) => {
+        const reply = await redis.sendCommand('SET', featureName, data);
+        return reply.value() as string;
     },
 }
