@@ -1,13 +1,17 @@
-export class FeatureManagementService {
-    constructor() {}
-    public async addOrUpdateFeature(featureId: string, namespace: string, category: string, data: object) {
-        let fileName = [namespace, category, featureId].join(":");
-		let featurePath = './features/' + fileName + ".json";
+import { Cache } from 'lib/cache/cache.ts';
 
-        try {
-          Deno.writeTextFileSync(featurePath, JSON.stringify(data));
-        } catch (e) {
-            console.error(e);
-        }
-      } 
-}
+export const FeatureManagementService = {
+  addOrUpdate(featureId: string, namespace: string, category: string, data: object) {
+    let fileName = [namespace, category, featureId].join(":");
+    Cache.set(fileName, JSON.stringify(data))
+  },
+  async read(featureId: string, namespace: string, category: string) {
+    let fileName = [namespace, category, featureId].join(":");
+    try {
+      const feature = await Cache.get(fileName)
+      return JSON.parse(feature);
+    } catch {
+      throw new Error('Item not found')
+    }
+  },
+};
