@@ -1,7 +1,7 @@
 import { Application, isHttpError, Status } from 'oak/mod.ts';
 import { APPLICATION_HOSTNAME, APPLICATION_PORT } from 'lib/constants.ts';
 import router from 'src/router.ts';
-import { populateCache } from 'lib/cache/cache.ts'
+import { populateCache } from 'lib/cache/cache.ts';
 
 const app = new Application();
 

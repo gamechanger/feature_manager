@@ -12,4 +12,4 @@ fmt:
 	deno fmt
 
 pretty:
-	make lint fmt
+	make fmt lint
