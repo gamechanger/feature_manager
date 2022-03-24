@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "81711720-5ce1-45fd-8923-00e7433f8029",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create New Feature",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"vpn_ip_range\",\n  \"description\": \"Defines the VPN ip ranges to consider for checking incoming requests.\",\n\n  \"rule\": {\n    \"type\": \"regex_matcher\",\n    \"value\": \"^100\\\\.22\\\\.34\\\\.([1-9]|[1-9]\\\\d|1\\\\d\\\\d|2[0-4]\\\\d|250)$\"\n  },\n\n  \"state\": {\n    \"is_enabled\": true\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/feature/demo/new_feature/vpn_ip_range",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"feature",
+						"demo",
+						"new_feature",
+						"vpn_ip_range"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get New Feature",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"vpn_ip_range\",\n  \"description\": \"Defines the VPN ip ranges to consider for checking incoming requests.\",\n\n  \"rule\": {\n    \"type\": \"regex_matcher\",\n    \"value\": \"^100\\\\.22\\\\.34\\\\.([1-9]|[1-9]\\\\d|1\\\\d\\\\d|2[0-4]\\\\d|250)$\"\n  },\n\n  \"state\": {\n    \"is_enabled\": true\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/feature/demo/new_feature/vpn_ip_range",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"feature",
+						"demo",
+						"new_feature",
+						"vpn_ip_range"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Feature Flag",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"value\": \"swing_wizzard@coaches.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/check/demo/new_feature/enhanced_scoring",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"check",
+						"demo",
+						"new_feature",
+						"enhanced_scoring"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Feature",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"enhanced_scoring\",\n  \"description\": \"Checks if the user is allowed to use the new enhance scoring feature\",\n\n  \"rule\": {\n    \"type\": \"list_checker\",\n    \"value\": [\n      \"got_em_all@catchers.com\",\n      \"heavy_bat@homerun.com\",\n      \"swing_wizzard@coaches.com\"\n    ]\n  },\n\n  \"state\": {\n    \"is_enabled\": true\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/feature/demo/new_feature/enhanced_scoring",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"feature",
+						"demo",
+						"new_feature",
+						"enhanced_scoring"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Re-check Feature",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"value\": \"swing_wizzard@coaches.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/check/demo/new_feature/enhanced_scoring",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"check",
+						"demo",
+						"new_feature",
+						"enhanced_scoring"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
