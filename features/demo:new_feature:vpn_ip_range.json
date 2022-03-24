@@ -1,6 +1,6 @@
 {
   "id": "vpn_ip_range",
-  "description": "Defines the VPN ip ranges to consider for checking incoming requests.",
+  "description": "Defines the scoring range to consider when using AI to determine a score play.",
 
   "rule": {
     "type": "regex_matcher",

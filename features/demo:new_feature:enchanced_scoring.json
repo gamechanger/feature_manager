@@ -5,9 +5,9 @@
   "rule": {
     "type": "list_checker",
     "value": [
-      "awesome_user@domain.com",
-      "out_of_league@catchers.com",
-      "heavy_bat@homerun.com"
+      "got_em_all@catchers.com",
+      "heavy_bat@homerun.com",
+      "swing_wizzard@coaches.com"
     ]
   },
 
