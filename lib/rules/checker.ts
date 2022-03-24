@@ -1,10 +1,9 @@
 const LIST_CHECKER = 'list_checker';
 const RANGE_CHECKER = 'range_checker';
 const REGEX_MATCHER = 'regex_matcher';
-const STATE_CHECKER = 'state_checker';
 const VALUE_CHECKER = 'value_checker';
 
-export type RuleType = typeof LIST_CHECKER | typeof RANGE_CHECKER | typeof REGEX_MATCHER | typeof STATE_CHECKER | typeof VALUE_CHECKER;
+export type RuleType = typeof LIST_CHECKER | typeof RANGE_CHECKER | typeof REGEX_MATCHER | typeof VALUE_CHECKER;
 
 type RuleTypeForValueChecker = {
     type: typeof VALUE_CHECKER;
@@ -14,11 +13,6 @@ type RuleTypeForValueChecker = {
 type RuleTypeForListChecker = {
     type: typeof LIST_CHECKER;
     value: (string | boolean | number)[];
-}
-
-type RuleTypeForStateChecker= {
-    type: typeof STATE_CHECKER;
-    value: boolean;
 }
 
 type RuleTypeForRangeChecker = {
@@ -34,7 +28,7 @@ type RuleTypeForRegexMatcher = {
 export type FeatureDefinition = {
     id: string;
     description: string;
-    rule: RuleTypeForListChecker | RuleTypeForValueChecker | RuleTypeForRangeChecker | RuleTypeForRegexMatcher | RuleTypeForStateChecker;
+    rule: RuleTypeForListChecker | RuleTypeForValueChecker | RuleTypeForRangeChecker | RuleTypeForRegexMatcher;
     state: {
         is_enabled: boolean;
         is_expired?: boolean;
@@ -55,10 +49,6 @@ function isValueChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForVal
     return rule.type === VALUE_CHECKER;
 }
 
-function isStateChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForStateChecker {
-    return rule.type === STATE_CHECKER;
-}
-
 function isListChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForListChecker {
     return rule.type === LIST_CHECKER;
 }
@@ -75,9 +65,6 @@ function getCheckedValue(featureDefinition: FeatureDefinition, value: boolean | 
     if (isValueChecker(featureDefinition.rule)) {
         return featureDefinition.rule.value === value;
     } 
-    if (isStateChecker(featureDefinition.rule)) {
-        return featureDefinition.state.is_enabled === value;
-    }
     if (isListChecker(featureDefinition.rule)) {
         return featureDefinition.rule.value.includes(value);
     }
