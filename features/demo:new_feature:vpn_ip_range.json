@@ -1,0 +1,13 @@
+{
+  "id": "vpn_ip_range",
+  "description": "Defines the VPN ip ranges to consider for checking incoming requests.",
+
+  "rule": {
+    "type": "regex_matcher",
+    "value": "^100\\.22\\.33\\.([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|250)$"
+  },
+
+  "state": {
+    "is_enabled": true
+  }
+}

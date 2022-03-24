@@ -25,8 +25,11 @@ router
 			context.response.status = 500;
 		}
 	})
-	.post('/check/:namespace/:category/:id', (context) => {
-		context.response.body = 'response';
+	.post('/check/:namespace/:category/:id', async (context) => {
+		const feature = `${context.params.namespace}:${context.params.category}:${context.params.id}`
+		const result = context.request.body();
+		const parsedBody = await result.value;
+		context.response.body = checker(feature, parsedBody.value);
 	});
 
 export default router;
