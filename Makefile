@@ -3,7 +3,7 @@ help:  ## Prints out this help text
 
 run:  ## Run the application
 	docker-compose up -d
-	deno run --allow-env=DENO_ENV --allow-net --watch src/main.ts
+	deno run --allow-env=DENO_ENV --allow-net --allow-read --watch src/main.ts
 
 lint:
 	deno lint
@@ -12,4 +12,4 @@ fmt:
 	deno fmt
 
 pretty:
-	make lint fmt
+	make fmt lint

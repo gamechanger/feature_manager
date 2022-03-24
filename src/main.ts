@@ -1,6 +1,7 @@
 import { Application, isHttpError, Status } from 'oak/mod.ts';
 import { APPLICATION_HOSTNAME, APPLICATION_PORT } from 'lib/constants.ts';
 import router from 'src/router.ts';
+import { populateCache } from 'lib/cache/cache.ts';
 
 const app = new Application();
 
@@ -49,5 +50,7 @@ app.addEventListener('listen', ({ hostname, port, secure }) => {
 		}:${port}`,
 	);
 });
+
+populateCache();
 
 await app.listen({ hostname: APPLICATION_HOSTNAME, port: APPLICATION_PORT });
