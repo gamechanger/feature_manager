@@ -1,34 +1,33 @@
+const LIST_CHECKER = 'list_checker';
+const RANGE_CHECKER = 'range_checker';
+const REGEX_MATCHER = 'regex_matcher';
+const STATE_CHECKER = 'state_checker';
+const VALUE_CHECKER = 'value_checker';
 
-export enum RuleTypeEnum {
-    LIST_CHECKER = 'list_checker',
-    RANGE_CHECKER = 'range_checker',
-    REGEX_MATCHER = 'regex_matcher',
-    STATE_CHECKER = 'state_checker',
-    VALUE_CHECKER = 'value_checker',
-}
+export type RuleType = typeof LIST_CHECKER | typeof RANGE_CHECKER | typeof REGEX_MATCHER | typeof STATE_CHECKER | typeof VALUE_CHECKER;
 
 type RuleTypeForValueChecker = {
-    type: RuleTypeEnum.VALUE_CHECKER;
+    type: typeof VALUE_CHECKER;
     value: string | boolean | number;
 }
 
 type RuleTypeForListChecker = {
-    type: RuleTypeEnum.LIST_CHECKER;
+    type: typeof LIST_CHECKER;
     value: (string | boolean | number)[];
 }
 
 type RuleTypeForStateChecker= {
-    type: RuleTypeEnum.STATE_CHECKER;
+    type: typeof STATE_CHECKER;
     value: boolean;
 }
 
 type RuleTypeForRangeChecker = {
-    type: RuleTypeEnum.RANGE_CHECKER;
+    type: typeof RANGE_CHECKER;
     value: { min: number; max: number }[];
 }
 
 type RuleTypeForRegexMatcher = {
-    type: RuleTypeEnum.REGEX_MATCHER;
+    type: typeof REGEX_MATCHER;
     value: string;
 }
 
@@ -53,23 +52,23 @@ export type RuleCheck = {
 }
 
 function isValueChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForValueChecker {
-    return rule.type === RuleTypeEnum.VALUE_CHECKER;
+    return rule.type === VALUE_CHECKER;
 }
 
 function isStateChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForStateChecker {
-    return rule.type === RuleTypeEnum.STATE_CHECKER;
+    return rule.type === STATE_CHECKER;
 }
 
 function isListChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForListChecker {
-    return rule.type === RuleTypeEnum.LIST_CHECKER;
+    return rule.type === LIST_CHECKER;
 }
 
 function isRangeChecker(rule: FeatureDefinition['rule']): rule is RuleTypeForRangeChecker {
-    return rule.type === RuleTypeEnum.RANGE_CHECKER;
+    return rule.type === RANGE_CHECKER;
 }
 
 function isRegexMatcher(rule: FeatureDefinition['rule']): rule is RuleTypeForRegexMatcher {
-    return rule.type === RuleTypeEnum.REGEX_MATCHER;
+    return rule.type === REGEX_MATCHER;
 }
 
 function getCheckedValue(featureDefinition: FeatureDefinition, value: boolean | string | number): boolean {
@@ -100,7 +99,7 @@ export const checker = (featureName: string, value: boolean | string | number ):
         id: "vpn_ip_range",
         description: "Defines the scoring range to consider when using AI to determine a score play.",
         rule: {
-          type: RuleTypeEnum.REGEX_MATCHER,
+          type: 'regex_matcher',
           value: "^100\\.22\\.33\\.([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|250)$"
         },
         state: {
