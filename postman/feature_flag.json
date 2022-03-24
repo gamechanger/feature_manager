@@ -7,12 +7,23 @@
 	"item": [
 		{
 			"name": "Create New Feature",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set('expires_at', new Date().valueOf() + (10 * 1000))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"id\": \"vpn_ip_range\",\n  \"description\": \"Defines the VPN ip ranges to consider for checking incoming requests.\",\n\n  \"rule\": {\n    \"type\": \"regex_matcher\",\n    \"value\": \"^100\\\\.22\\\\.34\\\\.([1-9]|[1-9]\\\\d|1\\\\d\\\\d|2[0-4]\\\\d|250)$\"\n  },\n\n  \"state\": {\n    \"is_enabled\": true\n  }\n}",
+					"raw": "{\n  \"id\": \"enhanced_scoring\",\n  \"description\": \"Checks if the user is allowed to use the new enhance scoring feature\",\n\n  \"rule\": {\n    \"type\": \"list_checker\",\n    \"value\": [\n      \"got_em_all@catchers.com\",\n      \"heavy_bat@homerun.com\"\n    ]\n  },\n\n  \"state\": {\n    \"is_enabled\": true,\n    \"expires_at\": {{expires_at}}\n  }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,7 +31,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/feature/demo/new_feature/vpn_ip_range",
+					"raw": "{{host}}/feature/demo/new_feature/enhanced_scoring",
 					"host": [
 						"{{host}}"
 					],
@@ -28,7 +39,7 @@
 						"feature",
 						"demo",
 						"new_feature",
-						"vpn_ip_range"
+						"enhanced_scoring"
 					]
 				}
 			},
@@ -73,7 +84,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n \"value\": \"swing_wizzard@coaches.com\"\n}",
+					"raw": "{\n \"value\": \"got_em_all@catchers.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -177,7 +188,12 @@
 	"variable": [
 		{
 			"key": "host",
-			"value": "http://localhost:3000",
+			"value": "http://0.0.0.0:3000",
+			"type": "string"
+		},
+		{
+			"key": "created_at",
+			"value": "0",
 			"type": "string"
 		}
 	]
