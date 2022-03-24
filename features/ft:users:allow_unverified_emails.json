@@ -1,0 +1,13 @@
+{
+  "id": "allow_unverified_emails",
+  "description": "FT: Whether or not we should allow unverified emails sign-in",
+
+  "rule": {
+    "type": "value_checker",
+    "value": true
+  },
+
+  "state": {
+    "is_enabled": true
+  }
+}

@@ -18,8 +18,8 @@ go beyond the on/off state.
 
 ## Feature rule types
 
-* *state_checker*: performs a check against the internal state of the feature; kind of the on/off legacy type
-* *value_checker*: compares the incoming value with the one defined in the rule, returns true if the match otherwise false
+* *value_checker*: this is the simplest rule type checker, it compares the incoming value with the one defined in the
+rule, it is also the way to check for on/off as the Feature Toggle works  
 * *list_checker*: compares the incoming value against each one on the lists, if it matches at least one, returns true 
 * *range_checker*: returns true if the incoming value is withing any of the ranges (inclusive)
 * *regex_matcher*: returns true if the incoming value matches the regex 
@@ -41,6 +41,24 @@ tests. *value_checker* rule type could save the day as you keep the same code bu
     "value": "awesome_user@domain.com"
   },
 
+  "state": {
+    "is_enabled": true
+  }
+}
+```
+
+_Feature Toggle (value_checker)_
+
+Similar to the previous example we can use `value_checker` to check for on/off as FT currently work.
+
+```json
+{
+  "id": "allow_unverified_emails",
+  "description": "FT: Whether or not we should allow unverified emails sign-in",
+  "rule": {
+    "type": "value_checker",
+    "value": true
+  },
   "state": {
     "is_enabled": true
   }
@@ -124,50 +142,22 @@ response.
 }
 ```
 
------------------ old doc beyond this point
-
-
-
-### Other Benefits
-- Reduces the amount of code in Eden, making it slightly faster to compile and less noisy for
-  maintaining the core capabilities.
-- FM as a service allows to easily add new features and scope them to specific applications without interfering with other in app
-  business logics.
-- Feature toggling allows a code logic to check whether the feature is enabled or not in order to run. By making a feature checker customizable
-    we could move some business logic checks to a more dynamic place that wouldn't require build/deployment process (only authorization).
-- Keep an audit-trail of what and when something has changed, notify interested parties about changes or expiration
-
-The intention of this hack is to abstract away the Feature Toggle capability from Eden into a service (Feature Manager)
-and make it accessible and customizable not only for Eden but for any system.
-
-
-## Key Features:
-- Application organized features
-- Rule based checker
-- Auto disable feature
-- In-memory cached client
-- Notifications on change
-
-
-
 ## Data Structures:
 
 ***feature (key:value)***
 
 <ins>**key**</ins>: represents a self-descriptive id in the format of
-`namespace:category:name`; this naming convention helps organize features into spaces and categories.
-It makes it easier to find and organize features under similar groups.
+`namespace:category:id`; this naming convention by definition helps organize features into spaces and categories.
 
-`namespace`:
-defines the high level application logic or domain; i.e: auth, scoring, android-app, ios-app, streaming
+* `namespace`: defines the high level application logic or domain; i.e: auth, scoring, android-app, ios-app, streaming
 
-`category`: defines to what category the feature belongs, think of this as a way to organize features under a common
-name; i.e: auth:web:x, auth:android:x, scoring:bats:x, scoring:soccer:x
+* `category`: defines a section withing the namespace to put features that are related to a specific logic together;
+  i.e: auth:web:x, auth:android:x, scoring:bats:x, scoring:soccer:x
 
-`name`: defines the identifier of the feature; i.e: auth:web:require-attestation,
-auth:android:required-attestation, scoring:bats:allow-multi-scoring, scoring:soccer:allow-ai-scoring
+* `id`: the feature identifier; i.e: auth:web:required-attestation,
+  auth:android:required-attestation, scoring:bats:allow-multi-scoring, scoring:soccer:allow-ai-scoring
 
-<ins>**value**</ins>: defines what the rule should perform and how.
+<ins>**value**</ins>: defines the feature definition as a JSON
 
 ```
 {
@@ -182,7 +172,6 @@ auth:android:required-attestation, scoring:bats:allow-multi-scoring, scoring:soc
   state: {
      is_enabled: boolean
      is_expired?: boolean
-     data?: boolean|number|string|json
   }
 
   expiration: {
@@ -200,7 +189,27 @@ auth:android:required-attestation, scoring:bats:allow-multi-scoring, scoring:soc
 }
 ```
 
-##Api definitions
+## Key Features:
+- Application based features 
+- Rule based checker
+- Auto disable feature
+- Notifications on change
+- In-memory cached client
+
+## Other Benefits
+- Reduces the amount of code in Eden, making it slightly faster to compile and less noisy for
+  maintaining the core capabilities.
+- FM as a service allows to easily add new features and scope them to specific applications without interfering with other in app
+  business logics.
+- Feature toggling allows a code logic to check whether the feature is enabled or not in order to run. By making a feature checker customizable
+  we could move some business logic checks to a more dynamic place that wouldn't require build/deployment process (only authorization).
+- Keep an audit-trail of what and when something has changed, notify interested parties about changes or expiration
+
+
+The intention of this hack is to abstract away the Feature Toggle capability from Eden into a service (Feature Manager)
+and make it accessible and customizable not only for Eden but for any system.
+
+## Api definition
 
 Data Flow:
 
@@ -223,54 +232,38 @@ POST /check/:namespace/:category/:feature_id
 <- 200 | 500 | 401 | 403
 {
     checks: {
-        value: boolean,
+        value?: boolean,
     },
     state: {
         is_enabled: boolean,
-        is_expired: boolean,
+        is_expired?: boolean,
     }
 }
 ```
 
-
-Tech stack:
-node/deno/go/rust
-redis/dynamodb/S3
-
-Plan:
-
-Stage 1
-Restful communication layer
-Rules checker logic: boolean_checker
-Rules in memory caching
-Postman collection
-
-
-Stage 2
-Client caching capabilities
-Websocket communication layer
-Client SDK
-Application token authentication logic
-Infrastructure
-Feature Migration
-Eden refactoring
-Cx Tool refactoring
-
-
-Stage 3
-Auto toggle
-Auto delete
-Change alerting
-Templating system
-
-Tech debt:
-Application client/daemon
-Client sync and in memory caching logic
-Infrastructure setup (EC2 instances, DynamoDB credentials, connectivity, consul and TF setup)
-
-Migrate FT definitions to FM
-Implement a management system (CX tools?) to use the new FM
-Migrate Eden to use the FM client
+## Tech stack
+Deno - https://deno.land/ (because it is cooler than Node) 
+OAK - https://deno.land/x/oak/ (like Koa but for Deno)
+Redis - for caching
 
 # To the *feature* and beyond
 
+Stage 1
+Infrastructure setup (EC2 instances, DynamoDB credentials, connectivity, consul and TF setup)
+In memory caching of features
+Client SDK
+
+Stage 2
+Feature Migration (FT -> FM)
+Client sync and in memory caching logic
+Eden refactoring
+Cx Tool refactoring
+FM Management system (CX tools?)
+
+Stage 3
+Application token authentication
+Websocket communication layer
+Auto toggle
+Auto delete
+Alerting system on change
+Templating system
