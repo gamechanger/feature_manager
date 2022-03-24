@@ -3,6 +3,7 @@
     "oak/": "https://deno.land/x/oak/",
     "rules/": "./rules/",
     "lib/": "./lib/",
-    "src/": "./src/"
+    "src/": "./src/",
+    "redis/": "https://deno.land/x/redis@v0.25.4/"
   }
 }
