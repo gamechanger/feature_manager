@@ -242,28 +242,28 @@ POST /check/:namespace/:category/:feature_id
 ```
 
 ## Tech stack
-Deno - https://deno.land/ (because it is cooler than Node) 
-OAK - https://deno.land/x/oak/ (like Koa but for Deno)
-Redis - for caching
+* Deno - https://deno.land/ (because it is cooler than Node) 
+* OAK - https://deno.land/x/oak/ (like Koa but for Deno)
+* Redis - for caching
 
 # To the *feature* and beyond
 
-Stage 1
-Infrastructure setup (EC2 instances, DynamoDB credentials, connectivity, consul and TF setup)
-In memory caching of features
-Client SDK
+### Stage 1
+* Infrastructure setup (EC2 instances, DynamoDB credentials, connectivity, consul and TF setup)
+* In memory caching of features
+* Client SDK
 
-Stage 2
-Feature Migration (FT -> FM)
-Client sync and in memory caching logic
-Eden refactoring
-Cx Tool refactoring
-FM Management system (CX tools?)
+### Stage 2
+* Feature Migration (FT -> FM)
+* Client sync and in memory caching logic
+* Eden refactoring
+* Cx Tool refactoring
+* FM Management system (CX tools?)
 
-Stage 3
-Application token authentication
-Websocket communication layer
-Auto toggle
-Auto delete
-Alerting system on change
-Templating system
+### Stage 3
+* Application token authentication
+* Websocket communication layer
+* Auto toggle
+* Auto delete
+* Alerting system on change
+* Templating system
