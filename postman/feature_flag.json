@@ -55,7 +55,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"id\": \"vpn_ip_range\",\n  \"description\": \"Defines the VPN ip ranges to consider for checking incoming requests.\",\n\n  \"rule\": {\n    \"type\": \"regex_matcher\",\n    \"value\": \"^100\\\\.22\\\\.34\\\\.([1-9]|[1-9]\\\\d|1\\\\d\\\\d|2[0-4]\\\\d|250)$\"\n  },\n\n  \"state\": {\n    \"is_enabled\": true\n  }\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -63,7 +63,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/feature/demo/new_feature/vpn_ip_range",
+					"raw": "{{host}}/feature/demo/new_feature/enhanced_scoring",
 					"host": [
 						"{{host}}"
 					],
@@ -71,7 +71,7 @@
 						"feature",
 						"demo",
 						"new_feature",
-						"vpn_ip_range"
+						"enhanced_scoring"
 					]
 				}
 			},
@@ -84,7 +84,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n \"value\": \"got_em_all@catchers.com\"\n}",
+					"raw": "{\n \"value\": \"swing_wizzard@coaches.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
