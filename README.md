@@ -5,7 +5,7 @@ A small service that gives product managers and business logic makers a great de
 ## Current state
 
 Feature Toggle is a capability hosted in Eden's code. It allows a user (developer) to check if a certain piece of 
-code should run or not by checking what is the toggle status of the feature.
+logic should run or not by checking what is the toggle status of the feature.
 
 ## Defying the status quo
 
@@ -42,7 +42,7 @@ go beyond the on/off state.
   description: string,
     
   rule: {
-     type: [state_checker, value_checker, list_checker, range_checker, regex_matcher],
+     type: [value_checker, list_checker, range_checker, regex_matcher],
      value: boolean|number|string|[number]|[string]|json
   },
 
@@ -117,11 +117,11 @@ Similar to the previous example we can use `value_checker` to check for on/off a
 
 _Selected users (list_checker)_
 
-Bats has implemented a new way of scoring; we would like to make it available to a selected number of users and expand
-that list gradually as we gather feedback.
+A new way of  scoring has recently been implemented; we would like to make it available to a selected number of users 
+only and expand that list gradually as we gather feedback.
 
-Enter a *list_checker* rule type, where your code could get a `good to go` response if the email matches any of the ones
-defined in the list.
+Enter a *list_checker* rule type, where your code could get a `good to go` response if the user email matches any of
+the ones defined in the list.
 
 ```json
 {
@@ -146,13 +146,14 @@ defined in the list.
 _Adjustable ranges (range_checker)_
 
 The DNA team came up recently with an AI powerful enough to score plays with great accuracy but the model is still under 
-training. They have an idea of the range that should be taken in consideration as safe scoring parameter, they 
-are confident enough to give it a try and gradually tweak the range.
+training. They have an idea of the range that should be taken in consideration as safe scoring parameter, They have an
+idea of the range that should be taken in consideration as a safe scoring parameter, and they are confident enough to
+give it a try by having an option to tweak this range as the model gets better.
 
 ```json
 {
   "id": "score_on_range",
-  "description": "Defines the scoring range to consider when using AI to determine a score play.",
+  "description": "Defines the scoring range to consider when using AI Auto Scoring TM.",
 
   "rule": {
     "type": "range_checker",
@@ -204,13 +205,9 @@ response.
   maintaining the core capabilities.
 - FM as a service allows to easily add new features and scope them to specific applications without interfering with other in app
   business logics.
-- Feature toggling allows a code logic to check whether the feature is enabled or not in order to run. By making a feature checker customizable
-  we could move some business logic checks to a more dynamic place that wouldn't require build/deployment process (only authorization).
-- Keep an audit-trail of what and when something has changed, notify interested parties about changes or expiration
-
-
-The intention of this hack is to abstract away the Feature Toggle capability from Eden into a service (Feature Manager)
-and make it accessible and customizable not only for Eden but for any system.
+- Moving small pieces of business logic that require fast acting to a feature with rules improves our abilities to get things done
+faster without waiting for code build and deployment process (only authorization).
+- Keep an audit-trail of what and when something has changed and notify interested parties about changes or expiration.
 
 ## Api definition
 
