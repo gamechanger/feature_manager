@@ -1,5 +1,5 @@
 import { Cache } from 'lib/cache/cache.ts';
-import { FeatureDefinition, computeRulesState } from 'lib/rules/checker.ts'
+import { computeRulesState, FeatureDefinition } from 'lib/rules/checker.ts';
 
 export const FeatureManagementService = {
 	async addOrUpdate(
@@ -17,11 +17,11 @@ export const FeatureManagementService = {
 		const fileName = [namespace, category, featureId].join(':');
 		try {
 			const feature = await Cache.get(fileName);
-			let parsedFeature = JSON.parse(feature)
+			const parsedFeature = JSON.parse(feature);
 			const computedFeature = {
 				...parsedFeature,
-				state: computeRulesState(parsedFeature)
-			}
+				state: computeRulesState(parsedFeature),
+			};
 			return computedFeature;
 		} catch {
 			throw new Error('Item not found');

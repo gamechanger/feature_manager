@@ -26,7 +26,6 @@ router
 			);
 			context.response.status = 200;
 			context.response.body = feature;
-			
 		} catch {
 			context.response.status = 500;
 		}
